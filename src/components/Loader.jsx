@@ -58,7 +58,7 @@ export default function Loader({ onComplete }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        PARTANX
+        PARTANX TECHNOLOGIES
       </motion.div>
 
       {/* Progress bar */}

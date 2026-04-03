@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import Footer from '../sections/Footer';
+import Skills from '../sections/Skills';
 
 // Extend the services data for detailed pages.
 const servicesDetailsData = {
@@ -52,6 +53,38 @@ const servicesDetailsData = {
         name: 'Visual Asset Creation',
         desc: 'Designing eye-catching graphics, reels, and stories that stand out in crowded feeds.'
       }
+    ],
+    skills: [
+      {
+        icon: '🎨',
+        title: 'Content & Creative',
+        skills: [
+          { name: 'Content Creation (Canva/PS)', pct: 95 },
+          { name: 'Video Editing (CapCut/Pr)', pct: 92 },
+          { name: 'Copywriting & Hooks', pct: 94 },
+          { name: 'Trend & Hashtag Research', pct: 90 },
+        ],
+      },
+      {
+        icon: '📈',
+        title: 'Strategy & Ads',
+        skills: [
+          { name: 'Social Media Strategy', pct: 92 },
+          { name: 'Social Media Advertising', pct: 88 },
+          { name: 'Analytics & Tracking', pct: 90 },
+          { name: 'Brand Positioning', pct: 85 },
+        ],
+      },
+      {
+        icon: '💼',
+        title: 'Business & Management',
+        skills: [
+          { name: 'Client Management', pct: 95 },
+          { name: 'Content Calendars', pct: 92 },
+          { name: 'Community Engagement', pct: 90 },
+          { name: 'Tools (Trello, Notion)', pct: 88 },
+        ],
+      },
     ]
   }
 };
@@ -136,6 +169,9 @@ export default function ServiceDetails() {
             ))}
           </div>
         </section>
+
+        {id === 'web-development' && <Skills />}
+        {id === 'social-media-management' && <Skills categories={service.skills} />}
 
         {/* Call to Action */}
         <section style={{ textAlign: 'center', padding: '4rem 2rem', background: 'rgba(255,255,255,0.02)' }}>

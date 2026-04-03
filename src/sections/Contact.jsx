@@ -7,10 +7,10 @@ import MagneticButton from '../components/MagneticButton';
 gsap.registerPlugin(ScrollTrigger);
 
 const channels = [
-  { icon: '✉️', label: 'Email', value: 'hello@nexus.studio', href: 'mailto:hello@nexus.studio' },
-  { icon: '💼', label: 'LinkedIn', value: '/in/nexus-studio', href: '#' },
-  { icon: '🐙', label: 'GitHub', value: '@nexus-studio', href: '#' },
-  { icon: '🐦', label: 'Twitter', value: '@nexusstudio', href: '#' },
+  { icon: '✉️', label: 'Email', value: 'tech.partanx@gmail.com', href: 'mailto:tech.partanx@gmail.com' },
+  { icon: '💼', label: 'LinkedIn', value: 'PartanX', href: 'https://www.linkedin.com/company/partanx/' },
+  { icon: '📷', label: 'Instagram', value: '@tech.partanx', href: 'https://www.instagram.com/tech.partanx/' },
+  { icon: '🐦', label: 'Twitter', value: '@PartanX_', href: 'https://x.com/PartanX_' },
 ];
 
 const formVariants = {

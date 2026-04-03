@@ -1,7 +1,7 @@
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial, Sphere } from '@react-three/drei';
-import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
@@ -147,6 +147,21 @@ export default function About() {
                 </div>
               ))}
             </div>
+
+            <Link to="/about" style={{ 
+              display: 'inline-block',
+              marginTop: '2.5rem',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'var(--clr-text)',
+              padding: '0.8rem 1.8rem',
+              borderRadius: '100px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '0.95rem'
+            }}>
+              Discover Our Story →
+            </Link>
           </div>
 
         </div>

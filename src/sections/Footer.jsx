@@ -9,7 +9,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-links">
-          {['Privacy', 'Terms', 'GitHub', 'Twitter'].map((l) => (
+          {['Privacy', 'Terms', 'Instagram', 'Twitter', 'LinkedIn'].map((l) => (
             <a key={l} href="#">{l}</a>
           ))}
         </div>

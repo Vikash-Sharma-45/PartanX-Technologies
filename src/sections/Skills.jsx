@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const skillGroups = [
+const defaultSkillGroups = [
   {
     icon: '⚡',
     title: 'Frontend',
@@ -37,7 +37,7 @@ const skillGroups = [
   },
 ];
 
-export default function Skills() {
+export default function Skills({ categories = defaultSkillGroups }) {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
 
@@ -95,7 +95,7 @@ export default function Skills() {
         </div>
 
         <div className="skills-grid">
-          {skillGroups.map((group) => (
+          {categories.map((group) => (
             <div className="skill-category" key={group.title}>
               <div className="skill-category-icon">{group.icon}</div>
               <h3 className="skill-category-title">{group.title}</h3>
