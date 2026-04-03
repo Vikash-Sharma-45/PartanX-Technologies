@@ -37,7 +37,7 @@ export default function Navbar() {
       <div className="container navbar-inner">
         {/* Logo */}
         <a href="#hero" className="navbar-logo" onClick={(e) => handleNav(e, '#hero')}>
-          PARTANX
+          PARTANX TECHNOLOGIES
         </a>
 
         {/* Links */}

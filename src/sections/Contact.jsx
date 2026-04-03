@@ -1,10 +1,16 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MagneticButton from '../components/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// ── Web3Forms Access Key ──
+// Get your FREE access key at https://web3forms.com
+// 1. Go to web3forms.com → Enter "tech.partanx@gmail.com" → Verify email
+// 2. Copy the access key and paste it below
+const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
 
 const channels = [
   { icon: '✉️', label: 'Email', value: 'tech.partanx@gmail.com', href: 'mailto:tech.partanx@gmail.com' },
@@ -24,6 +30,8 @@ const formVariants = {
 export default function Contact() {
   const sectionRef = useRef(null);
   const infoRef = useRef(null);
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -39,16 +47,83 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Form submission placeholder
-    const btn = e.currentTarget.querySelector('button[type="submit"]');
-    btn.textContent = '✓ Sent!';
-    btn.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
-    setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.style.background = '';
-    }, 3000);
+    setStatus('sending');
+    setErrorMsg('');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    // Add Web3Forms access key and settings
+    formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+    formData.append('from_name', 'PartanX Website');
+    formData.append('subject', formData.get('subject') || 'New Contact Form Submission — PartanX');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus('success');
+        form.reset();
+        setTimeout(() => setStatus('idle'), 4000);
+      } else {
+        setStatus('error');
+        setErrorMsg(result.message || 'Something went wrong. Please try again.');
+        setTimeout(() => setStatus('idle'), 4000);
+      }
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg('Network error. Please check your connection and try again.');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  };
+
+  const getButtonContent = () => {
+    switch (status) {
+      case 'sending':
+        return (
+          <>
+            Sending...
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: 'spin 1s linear infinite' }}>
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+          </>
+        );
+      case 'success':
+        return (
+          <>
+            ✓ Message Sent!
+          </>
+        );
+      case 'error':
+        return (
+          <>
+            ✕ Failed to Send
+          </>
+        );
+      default:
+        return (
+          <>
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 19-7z" />
+            </svg>
+          </>
+        );
+    }
+  };
+
+  const getButtonStyle = () => {
+    const base = { width: '100%', justifyContent: 'center', borderRadius: '12px', transition: 'background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease' };
+    if (status === 'success') return { ...base, background: 'linear-gradient(135deg, #10b981, #06b6d4)' };
+    if (status === 'error') return { ...base, background: 'linear-gradient(135deg, #ef4444, #f97316)' };
+    return base;
   };
 
   return (
@@ -76,7 +151,7 @@ export default function Contact() {
 
             <div className="contact-channels">
               {channels.map((ch) => (
-                <a key={ch.label} href={ch.href} className="contact-channel">
+                <a key={ch.label} href={ch.href} className="contact-channel" target="_blank" rel="noopener noreferrer">
                   <div className="contact-channel-icon">{ch.icon}</div>
                   <div>
                     <div className="contact-channel-label">{ch.label}</div>
@@ -98,35 +173,48 @@ export default function Contact() {
             viewport={{ once: false, amount: 0.3 }}
           >
             <form className="contact-form" onSubmit={handleSubmit}>
+              {/* Honeypot spam protection */}
+              <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
+
               <div className="grid-2" style={{ gap: '1rem' }}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="name">Name</label>
-                  <input id="name" type="text" className="form-input" placeholder="John Doe" required />
+                  <input id="name" name="name" type="text" className="form-input" placeholder="John Doe" required disabled={status === 'sending'} />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="email">Email</label>
-                  <input id="email" type="email" className="form-input" placeholder="john@example.com" required />
+                  <input id="email" name="email" type="email" className="form-input" placeholder="john@example.com" required disabled={status === 'sending'} />
                 </div>
               </div>
               <div className="form-group">
                 <label className="form-label" htmlFor="subject">Subject</label>
-                <input id="subject" type="text" className="form-input" placeholder="Project Inquiry" />
+                <input id="subject" name="subject" type="text" className="form-input" placeholder="Project Inquiry" disabled={status === 'sending'} />
               </div>
               <div className="form-group">
                 <label className="form-label" htmlFor="message">Message</label>
-                <textarea id="message" className="form-textarea" placeholder="Tell us about your project..." required />
+                <textarea id="message" name="message" className="form-textarea" placeholder="Tell us about your project..." required disabled={status === 'sending'} />
               </div>
+
+              {/* Status message */}
+              {status === 'success' && (
+                <div style={{ color: '#10b981', fontSize: '0.9rem', textAlign: 'center', padding: '0.5rem 0' }}>
+                  🎉 Thank you! Your message has been sent successfully. We'll get back to you soon.
+                </div>
+              )}
+              {status === 'error' && (
+                <div style={{ color: '#ef4444', fontSize: '0.9rem', textAlign: 'center', padding: '0.5rem 0' }}>
+                  {errorMsg}
+                </div>
+              )}
 
               <MagneticButton strength={0.2}>
                 <button
                   type="submit"
                   className="btn-primary"
-                  style={{ width: '100%', justifyContent: 'center', borderRadius: '12px', transition: 'background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease' }}
+                  style={getButtonStyle()}
+                  disabled={status === 'sending'}
                 >
-                  Send Message
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 19-7z" />
-                  </svg>
+                  {getButtonContent()}
                 </button>
               </MagneticButton>
             </form>
@@ -134,6 +222,14 @@ export default function Contact() {
 
         </div>
       </div>
+
+      {/* Spinner keyframe for loading state */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </section>
   );
 }

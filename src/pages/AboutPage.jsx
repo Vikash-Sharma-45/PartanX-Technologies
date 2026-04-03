@@ -151,7 +151,7 @@ export default function AboutPage() {
 
         {/* Simple Navbar for Inner Pages */}
         <nav style={{ padding: '2rem max(2rem, calc((100vw - 1280px)/2 + 2rem))', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Link to="/" className="navbar-logo" style={{ textDecoration: 'none' }}>PARTANX</Link>
+          <Link to="/" className="navbar-logo" style={{ textDecoration: 'none' }}>PARTANX TECHNOLOGIES</Link>
           <Link to="/" style={{ color: 'var(--clr-text)', textDecoration: 'none', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '100px', fontSize: '0.9rem' }}>
             ← Back to Home
           </Link>
